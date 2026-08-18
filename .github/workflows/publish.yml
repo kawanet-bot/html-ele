@@ -5,7 +5,7 @@ name: Publish
 # maintainer approves it with 2FA.
 on:
   push:
-    tags: [ "v*" ]
+    tags: [ "0.*.*" ]
 
 # Deny by default; each job opts in to the minimum it needs.
 permissions: { }
@@ -34,7 +34,7 @@ jobs:
       - name: Verify tag matches package.json
         run: |
           version=$(npm pkg get version | tr -d '"')
-          test "v$version" = "$GITHUB_REF_NAME"
+          test "$version" = "$GITHUB_REF_NAME"
 
       - run: npm install --ignore-scripts
       - run: npm run build
