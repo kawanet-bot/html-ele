@@ -63,8 +63,6 @@ jobs:
           node-version: "24"
           package-manager-cache: false
 
-      - run: npm install -g npm@11
-
       - uses: actions/download-artifact@v8
         with:
           name: dist
