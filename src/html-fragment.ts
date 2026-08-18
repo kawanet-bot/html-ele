@@ -30,9 +30,10 @@ const docFragment = (code: string): DocumentFragment => {
 /**
  * Fallback parser that uses `createElement()` for special elements such as `<html>`, `<head>`, and `<body>`.
  * Limitation: the top-level tag must not appear among its nested children, or the parser will fail.
+ * The closing tag may be omitted, in which case the rest of the input becomes the content.
  */
 const docFragmentFB = (code: string): DocumentFragment => {
-    const split = code.split(/<((?![.-])[A-Z0-9._:-]+)((?![A-Z0-9._:-])(?:[^>"'/]|"[^"]*"|'[^']*')+)?(?:>(.*?)(?:<\/\1[^<>]*>)|\/>)/sig)
+    const split = code.split(/<((?![.-])[A-Z0-9._:-]+)((?![A-Z0-9._:-])(?:[^>"']|"[^"]*"|'[^']*')+)?(?:>(.*?)(?:<\/\1[^<>]*>|$))/sig)
 
     const fragment = docFragment(split[0])
 
@@ -51,7 +52,10 @@ const docFragmentFB = (code: string): DocumentFragment => {
         const elem = createElement(tagName)
 
         if (attributes) {
-            const fragment = docFragment(`<template ${attributes}/>`)
+            // Reproduce the source tag verbatim so the tokenizer sees each "/" where it
+            // was written. Only after a bare "=" does it join the value; anywhere else
+            // it is a self-closing marker the parser drops.
+            const fragment = docFragment(`<template ${attributes}>`)
             const parsed = fragment && fragment.firstElementChild
             if (parsed) for (const attr of parsed.attributes) {
                 elem.setAttribute(attr.name, attr.value)
