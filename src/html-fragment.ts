@@ -53,8 +53,8 @@ const docFragmentFB = (code: string): DocumentFragment => {
 
         if (attributes) {
             // Reproduce the source tag verbatim so the tokenizer sees each "/" where it
-            // was written. Only after a bare "=" does it join the value; anywhere else
-            // it is a self-closing marker the parser drops.
+            // was written. Within an attribute value it is an ordinary character;
+            // anywhere else in the tag it is a self-closing marker the parser drops.
             const fragment = docFragment(`<template ${attributes}>`)
             const parsed = fragment && fragment.firstElementChild
             if (parsed) for (const attr of parsed.attributes) {

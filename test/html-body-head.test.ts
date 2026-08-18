@@ -98,8 +98,8 @@ describe("HTMLHtmlElement", () => {
     })
 
     /**
-     * A trailing "/" is a self-closing marker the HTML parser drops, except
-     * right after a bare "=" where it is an ordinary value character.
+     * A "/" is an ordinary character within an attribute value, and a self-closing
+     * marker anywhere else in the tag, where the HTML parser drops it.
      */
     it(`trailing slash in the source tag`, () => {
         const BODY = ele("body")
