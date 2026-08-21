@@ -35,7 +35,7 @@ const docFragment = (code: string): DocumentFragment => {
 const docFragmentFB = (code: string): DocumentFragment => {
     const split = code.split(/<((?![.-])[A-Z0-9._:-]+)((?![A-Z0-9._:-])(?:[^>"']|"[^"]*"|'[^']*')+)?(?:>(.*?)(?:<\/\1[^<>]*>|$))/sig)
 
-    const fragment = docFragment(split[0])
+    const fragment = docFragment(split[0]!)
 
     for (let i = 0; i < split.length; i += 4) {
         const raw = split[i]
