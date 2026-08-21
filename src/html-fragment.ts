@@ -1,6 +1,6 @@
 import {createElement} from "./create-element.ts"
 
-const pickTagName = (code: string): string => {
+const pickTagName = (code: string): string | undefined => {
     const matched = ("string" === typeof code) && code.match(/<(?![.-])([A-Z0-9._:-]+)/i)
     if (matched) return matched[1]
 }
@@ -15,7 +15,7 @@ const isAvailableTag = (tagName: string): boolean => {
 const testAvailability = (tagName: string): boolean => {
     const fragment = docFragment(`<${tagName}></${tagName}>`)
     const elem = fragment && fragment.firstElementChild
-    if (elem) return elem.tagName.toLowerCase() === tagName
+    return !!elem && elem.tagName.toLowerCase() === tagName
 }
 
 /**

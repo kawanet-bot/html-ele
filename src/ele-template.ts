@@ -91,7 +91,8 @@ export const eleTemplate = ((t, args, useENode) => {
 
     if (Object.keys(templates).length > 0) {
         elem.querySelectorAll<HTMLTemplateElement>("template").forEach(e => {
-            const target = templates[e.dataset[DATA_KEY]]
+            const key = e.dataset[DATA_KEY]
+            const target = key && templates[key]
             if (target) e.replaceWith(target)
         })
     }

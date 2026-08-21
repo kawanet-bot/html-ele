@@ -11,6 +11,6 @@ before(async () => {
 
 after(() => {
     if (documentNotExist) {
-        delete globalThis.document
+        delete (globalThis as {document?: Document}).document
     }
 })
