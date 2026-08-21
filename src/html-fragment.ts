@@ -5,17 +5,17 @@ const pickTagName = (code: string): string | undefined => {
     if (matched) return matched[1]
 }
 
-const resultCache: Record<string, [boolean]> = {}
+const resultCache: Record<string, [boolean | undefined]> = {}
 
-const isAvailableTag = (tagName: string): boolean => {
+const isAvailableTag = (tagName: string): boolean | undefined => {
     tagName = tagName.toLowerCase()
     return (resultCache[tagName] || (resultCache[tagName] = [testAvailability(tagName)]))[0]
 }
 
-const testAvailability = (tagName: string): boolean => {
+const testAvailability = (tagName: string): boolean | undefined => {
     const fragment = docFragment(`<${tagName}></${tagName}>`)
     const elem = fragment && fragment.firstElementChild
-    return !!elem && elem.tagName.toLowerCase() === tagName
+    if (elem) return elem.tagName.toLowerCase() === tagName
 }
 
 /**
