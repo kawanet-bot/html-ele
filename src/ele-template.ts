@@ -67,15 +67,16 @@ export const eleTemplate = ((t, args, useENode) => {
     // template literals
     const TL$$ = (t: TemplateStringsArray, args: TemplateArguments): string => {
         const size = t.length
+        // size comes from t.length, so every index below is in range.
         if (size === 1) {
-            return t[0]
+            return t[0]!
         } else if (size === 2) {
-            return t[0] + $$(args[1]) + t[1]
+            return t[0]! + $$(args[1]) + t[1]!
         } else {
-            let str = t[0]
+            let str = t[0]!
             for (let i = 1; i < size; i++) {
                 str += $$(args[i] as EV)
-                str += t[i]
+                str += t[i]!
             }
             return str
         }
@@ -91,7 +92,8 @@ export const eleTemplate = ((t, args, useENode) => {
 
     if (Object.keys(templates).length > 0) {
         elem.querySelectorAll<HTMLTemplateElement>("template").forEach(e => {
-            const target = templates[e.dataset[DATA_KEY]]
+            const key = e.dataset[DATA_KEY]
+            const target = key && templates[key]
             if (target) e.replaceWith(target)
         })
     }

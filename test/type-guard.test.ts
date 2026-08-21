@@ -10,9 +10,9 @@ describe("TypeScript", () => {
         const DIV = ele("div")
 
         // language=HTML
-        assert.equal(DIV`
+        assert.equal(/* @ts-expect-error */ DIV`
             <div>${num && oh}</div>
-        `.outerHTML.trim(), "<div>0</div>") // not guarded yet
+        `.outerHTML.trim(), "<div>0</div>")
 
         // language=HTML
         assert.equal(/* @ts-expect-error */ DIV`
@@ -20,9 +20,9 @@ describe("TypeScript", () => {
         `.outerHTML.trim(), "<div>foo</div>")
 
         // language=HTML
-        assert.equal(DIV`
+        assert.equal(/* @ts-expect-error */ DIV`
             <div>${num && [oh]}</div>
-        `.outerHTML.trim(), "<div>0</div>") // not guarded yet
+        `.outerHTML.trim(), "<div>0</div>")
 
         // language=HTML
         assert.equal(/* @ts-expect-error */ DIV`
