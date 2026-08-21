@@ -11,6 +11,7 @@
   "compilerOptions": {
     "allowImportingTsExtensions": true,
     "allowSyntheticDefaultImports": true,
+    "isolatedModules": true,
     "module": "ESNext",
     "moduleResolution": "bundler",
     "noEmit": true,
@@ -25,6 +26,7 @@
     "skipLibCheck": false,
     "sourceMap": false,
     "strictNullChecks": false,
-    "target": "ES2022"
+    "target": "ES2022",
+    "verbatimModuleSyntax": true
   }
 }
