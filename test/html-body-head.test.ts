@@ -1,6 +1,6 @@
-import {ele} from "html-ele"
 import {strict as assert} from "node:assert"
 import {describe, it} from "node:test"
+import {ele} from "../src/index.ts"
 import "./jsdom-helper.ts"
 
 describe("HTMLHtmlElement", () => {
