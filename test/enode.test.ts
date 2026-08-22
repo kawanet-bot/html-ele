@@ -1,6 +1,6 @@
-import {EN} from "html-ele"
 import {strict as assert} from "node:assert"
 import {describe, it} from "node:test"
+import {EN} from "../src/index.ts"
 import "./jsdom-helper.ts"
 
 describe("ENode", () => {
