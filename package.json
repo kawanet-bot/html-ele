@@ -1,7 +1,7 @@
 {
   "name": "html-ele",
   "description": "εLε - Native HTMLElement builder from type-safe template literals",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "author": "Kawanet",
   "bugs": {
     "url": "https://github.com/kawanet/html-ele/issues"
@@ -25,7 +25,7 @@
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": ">=22",
+      "version": ">=22.18.0",
       "onFail": "warn"
     }
   },
