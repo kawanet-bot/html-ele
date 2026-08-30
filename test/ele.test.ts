@@ -1,9 +1,11 @@
 import {strict as assert} from "node:assert"
 import {describe, it} from "node:test"
 import {ele, ELE} from "../src/index.ts"
-import "./jsdom-helper.ts"
+import {skipDomTests} from "./jsdom-helper.ts"
 
-describe("ELE", () => {
+const DESCRIBE = skipDomTests ? describe.skip : describe
+
+DESCRIBE("ELE", () => {
     it("ELE`...`", () => {
         const node = ELE`
             <div class="foo"></div>

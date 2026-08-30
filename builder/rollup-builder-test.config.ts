@@ -9,13 +9,10 @@ import {showFiles} from "./show-files.ts"
 // package by name, so any supported Node.js runtime can run them against
 // dist/ without needing type-strip.
 const rollupConfig: RollupOptions = {
-    // Whitelist: a suite listed here must run without a DOM -- the packed
-    // matrix installs no devDependencies, so jsdom is never present there.
-    // Document-dependent suites stay source-only on the build host.
-    input: [
-        "../test/90.entrypoint.test.ts",
-        "../test/enode.test.ts",
-    ],
+    // Every suite rides the bundle: DOM-dependent ones skip themselves when
+    // NO_JSDOM is set (the packed matrix installs no devDependencies), and
+    // run wherever jsdom is available -- checkouts and the publish gate.
+    input: "../test/*.test.ts",
 
     // Bare specifiers stay external; only relative paths are bundled.
     external: /^[^.\/]/,

@@ -24,9 +24,10 @@ unpack:
 test: test-bundled test-iife
 
 # Resolves through node_modules after `unpack`; inside a checkout the
-# package name self-references dist/ instead.
+# package name self-references dist/ instead. NO_JSDOM tells the DOM
+# suites to skip themselves where jsdom cannot be installed.
 test-bundled:
-	cd ../.. && node --test builder/tests/bundled.mjs
+	cd ../.. && NO_JSDOM=$$(test -d node_modules/jsdom || echo 1) node --test builder/tests/bundled.mjs
 
 # Script-context run of the installed minified bundle: the browser IIFE
 # consumer shape, and proof that the tarball ships the file.

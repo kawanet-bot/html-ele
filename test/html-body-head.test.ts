@@ -1,9 +1,11 @@
 import {strict as assert} from "node:assert"
 import {describe, it} from "node:test"
 import {ele} from "../src/index.ts"
-import "./jsdom-helper.ts"
+import {skipDomTests} from "./jsdom-helper.ts"
 
-describe("HTMLHtmlElement", () => {
+const DESCRIBE = skipDomTests ? describe.skip : describe
+
+DESCRIBE("HTMLHtmlElement", () => {
     /**
      * As <html> element is the root element of HTML document,
      * it needs a special treatment when parsing.

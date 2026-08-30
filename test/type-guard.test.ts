@@ -1,9 +1,11 @@
 import {strict as assert} from "node:assert"
 import {describe, it} from "node:test"
 import {ele} from "../src/index.ts"
-import "./jsdom-helper.ts"
+import {skipDomTests} from "./jsdom-helper.ts"
 
-describe("TypeScript", () => {
+const DESCRIBE = skipDomTests ? describe.skip : describe
+
+DESCRIBE("TypeScript", () => {
     it(`type guard`, () => {
         let num: number = 0
         const oh = {outerHTML: "foo"}
