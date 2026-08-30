@@ -1,7 +1,7 @@
+import type * as declared from "html-ele"
 import {strict as assert} from "node:assert"
 import {createRequire} from "node:module"
 import {test} from "node:test"
-import type * as declared from "html-ele"
 import * as m from "../src/index.ts"
 
 const require = createRequire(import.meta.url)
