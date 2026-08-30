@@ -19,12 +19,12 @@ test("import entry (.mjs)", () => {
 })
 
 test("require entry (.cjs)", () => {
-    const c = require("html-ele")
-    assert.equal(typeof c.ele, "function")
+    const m = require("html-ele")
+    assert.equal(typeof m.ele, "function")
 })
 
 test("minified entry (.min.js)", () => {
     const cjs = require.resolve("html-ele")
-    const c = require(cjs.replace(/\.cjs$/, ".min.js"))
-    assert.equal(typeof c.ele, "function")
+    const m = require(cjs.replace(/\.cjs$/, ".min.js"))
+    assert.equal(typeof m.ele, "function")
 })
