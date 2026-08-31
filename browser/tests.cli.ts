@@ -1,4 +1,8 @@
-const {chromium} = require("playwright")
+interface Window {
+    mochaDone: Promise<number>
+}
+
+const {chromium}: typeof import("playwright") = require("playwright")
 const {resolve} = require("node:path")
 const {pathToFileURL} = require("node:url")
 
@@ -10,7 +14,7 @@ const run = async () => {
     try {
         const page = await browser.newPage()
         const pageErrors: Error[] = []
-        page.on("pageerror", error => pageErrors.push(error))
+        page.on("pageerror", (error: Error) => pageErrors.push(error))
 
         await page.goto(pathToFileURL(html).href)
 
