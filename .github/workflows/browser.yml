@@ -1,4 +1,4 @@
-name: Browser smoke test
+name: Browser CI
 
 on:
   push:
