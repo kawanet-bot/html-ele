@@ -5,6 +5,11 @@ SHELL := bash
 # Documented runtime named exports every consumer shape must expose.
 NAMED_EXPORTS := ele ELE HTML EN
 
+# Root of the copy under test: the installed package after `unpack`, or
+# the checkout itself (PKG_ROOT=.) for the publish gate, which runs the
+# staged artifacts in place without installing anything.
+PKG_ROOT ?= node_modules/html-ele
+
 # Package-side lifecycle: `pack` builds the tarball (renamed to the fixed
 # packed.tgz), `unpack` installs it (--no-save also works in a checkout),
 # `test` exercises it. Build `bundled` only after `pack`: npm pack runs
@@ -29,12 +34,18 @@ test: test-bundled test-iife
 test-bundled:
 	cd ../.. && NO_JSDOM=$$(test -d node_modules/jsdom || echo 1) node --test builder/tests/bundled.mjs
 
-# Script-context run of the installed minified bundle: the browser IIFE
-# consumer shape, and proof that the tarball ships the file.
+# Script-context run of the minified bundle under $(PKG_ROOT): the browser
+# IIFE consumer shape; in the default root it also proves the tarball
+# ships the file.
 test-iife:
-	(cat ../../node_modules/html-ele/dist/html-ele.min.js && echo '; for (const k of process.argv.slice(2)) { if (typeof ele[k] !== "function") { console.error("missing browser export:", k); process.exit(1); } console.log("browser export OK:", k); }') | node - $(NAMED_EXPORTS)
+	cd ../.. && (cat $(PKG_ROOT)/dist/html-ele.min.js && echo '; for (const k of process.argv.slice(2)) { if (typeof ele[k] !== "function") { console.error("missing browser export:", k); process.exit(1); } console.log("browser export OK:", k); }') | node - $(NAMED_EXPORTS)
+
+# Publish gate: the same behavior checks, run against the checkout's own
+# staged artifacts in place -- no tarball install involved.
+test-dist:
+	$(MAKE) test-bundled test-iife PKG_ROOT=.
 
 clean:
 	/bin/rm -f *.tgz
 
-.PHONY: all pack bundled unpack test test-bundled test-iife clean
+.PHONY: all pack bundled unpack test test-bundled test-iife test-dist clean
