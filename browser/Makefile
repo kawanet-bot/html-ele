@@ -18,7 +18,7 @@ install:
 	cd .. && npx --no-install playwright install --with-deps --only-shell chromium
 
 test: all
-	cd .. && node browser/tests.cli.ts
+	cd .. && node browser/tests.cli.mjs
 
 # Browser bundle cleanup remains owned by builder/Makefile.
 clean:

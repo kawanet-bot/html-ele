@@ -1,26 +1,21 @@
-interface Window {
-    mochaDone: Promise<number>
-}
+import {chromium} from "playwright"
+import {fileURLToPath, pathToFileURL} from "node:url"
 
-const {chromium}: typeof import("playwright") = require("playwright")
-const {resolve} = require("node:path")
-const {pathToFileURL} = require("node:url")
-
-const html = resolve(__dirname, "tests.html")
+const html = fileURLToPath(new URL("./tests.html", import.meta.url))
 
 const run = async () => {
     const browser = await chromium.launch()
 
     try {
         const page = await browser.newPage()
-        const pageErrors: Error[] = []
-        page.on("pageerror", (error: Error) => pageErrors.push(error))
+        const pageErrors = []
+        page.on("pageerror", error => pageErrors.push(error))
 
         await page.goto(pathToFileURL(html).href)
 
         const failures = await page.evaluate(async () => await Promise.race([
             window.mochaDone,
-            new Promise<number>((_, reject) => setTimeout(
+            new Promise((_, reject) => setTimeout(
                 () => reject(new Error("Mocha did not finish within 60 seconds")),
                 60_000,
             )),
