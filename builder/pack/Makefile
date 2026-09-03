@@ -36,7 +36,7 @@ bundled:
 # A checkout has its own manifest and keeps it.
 unpack:
 	cd ../.. && [ -e package.json ] || cp builder/pack/package.json package.json
-	cd ../.. && npm install ./builder/pack/packed.tgz --no-audit --no-fund --no-save
+	cd ../.. && npm install ./builder/pack/packed.tgz --no-audit --no-fund --no-save --engine-strict
 
 test: test-bundled test-iife
 
