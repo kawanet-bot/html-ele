@@ -10,6 +10,9 @@ NAMED_EXPORTS := ele ELE HTML EN
 # staged artifacts in place without installing anything.
 PKG_ROOT ?= node_modules/html-ele
 
+# A target name in builder/, not a path from here.
+BUILDER_TEST_DST := ./tests/bundled.mjs
+
 # The workflows drive these steps in order:
 #   nodejs.yml   pack bundled unpack test
 #   publish.yml  bundled test-dist
@@ -25,18 +28,22 @@ pack: clean
 	mv *-*.*.*.tgz packed.tgz
 
 bundled:
-	$(MAKE) -C .. tests/bundled.mjs
+	$(MAKE) -C .. $(BUILDER_TEST_DST)
 
+# The lane has no manifest, so the test-only peers the suites need come
+# from builder/pack/package.json. It names no package and declares no
+# exports, which is what keeps a self-reference from beating node_modules.
+# A checkout has its own manifest and keeps it.
 unpack:
-	cd ../.. && npm install ./builder/pack/packed.tgz --no-audit --no-fund --no-save
+	cd ../.. && [ -e package.json ] || cp builder/pack/package.json package.json
+	cd ../.. && npm install ./builder/pack/packed.tgz --no-audit --no-fund --no-save --engine-strict
 
 test: test-bundled test-iife
 
 # Resolves through node_modules after `unpack`; inside a checkout the
-# package name self-references dist/ instead. NO_JSDOM tells the DOM
-# suites to skip themselves where jsdom cannot be installed.
+# package name self-references dist/ instead.
 test-bundled:
-	cd ../.. && NO_JSDOM=$$(test -d node_modules/jsdom || echo 1) node --test builder/tests/bundled.mjs
+	cd ../.. && node --test builder/tests/bundled.mjs
 
 # Script-context run of the minified bundle under $(PKG_ROOT): the browser
 # IIFE consumer shape; in the default root it also proves the tarball
