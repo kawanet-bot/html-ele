@@ -1,7 +1,7 @@
 {
   "name": "html-ele",
   "description": "εLε - Native HTMLElement builder from type-safe template literals",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "author": "Kawanet",
   "bugs": {
     "url": "https://github.com/kawanet/html-ele/issues"
@@ -13,13 +13,13 @@
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-sucrase": "^5.1.0",
     "@rollup/plugin-terser": "^1.0.0",
-    "@types/jsdom": "^28.0.3",
+    "@types/jsdom": "^30.0.0",
     "@types/node": "^24.13.3",
-    "jsdom": "^29.1.1",
+    "jsdom": "^30.0.1",
     "mocha": "^12.0.0",
     "rollup": "^4.63.1",
     "terser": "^5.51.2",
-    "ts-refine": "^0.6.1",
+    "ts-refine": "^0.6.2",
     "typescript": "^6.0.3"
   },
   "devEngines": {
