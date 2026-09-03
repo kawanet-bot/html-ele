@@ -1,4 +1,4 @@
-import {after, before} from "node:test"
+import {after, describe} from "node:test"
 
 const documentNotExist = ("undefined" === typeof document)
 
@@ -6,12 +6,23 @@ const documentNotExist = ("undefined" === typeof document)
 // evaluated in browsers, where document exists and process may not.
 export const skipDomTests = documentNotExist && !!process.env.NO_JSDOM
 
-before(async () => {
+const DESCRIBE = skipDomTests ? describe.skip : describe
+
+const setup = async () => {
     if (documentNotExist && !skipDomTests) {
         const {JSDOM} = await import("jsdom")
-        globalThis.document = new JSDOM().window.document
+        if (!globalThis.document) {
+            globalThis.document = new JSDOM().window.document
+        }
     }
-})
+}
+
+// node:test starts a before() hook but does not wait for it before building
+// suites, so a suite that needs the DOM while it is being built has to wait
+// here instead.
+export const describeWithDOM = (title: string, fn: () => void | Promise<void>) => {
+    setup().then(() => DESCRIBE(title, fn))
+}
 
 after(() => {
     if (documentNotExist && !skipDomTests) {
