@@ -1,9 +1,7 @@
 import {strict as assert} from "node:assert"
-import {describe, it} from "node:test"
+import {it} from "node:test"
 import {ele} from "../src/index.ts"
-import {skipDomTests} from "./jsdom-helper.ts"
-
-const DESCRIBE = skipDomTests ? describe.skip : describe
+import {describeWithDOM as DESCRIBE} from "./jsdom-helper.ts"
 
 DESCRIBE("HTMLHtmlElement", () => {
     /**
