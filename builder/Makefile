@@ -21,15 +21,8 @@ MINJS_CONFIG := ./rollup-minjs.config.ts
 BROWSER_TEST_CONFIG := ./rollup-browser-test.config.ts
 BUILDER_TEST_CONFIG := ./rollup-builder-test.config.ts
 
-# Bundle is small: this package is a single source file with no production
-# dependencies and uses no Node builtins. Anything noticeably larger means
-# an accidental bundling of a transitive dep — fail the build so it cannot
-# slip in.
 MAX_BYTES := 10000
-
-# Cap for the browser test bundle, which inlines the test sources
-# plus the node:test / node:assert shims. The package source itself
-# is externalized through browser/import.js so it does not count.
+MINJS_MAX_BYTES := 3000
 TEST_MAX_BYTES := 30000
 
 ALL := $(MJS_DST) $(CJS_DST) $(MINJS_DST)
@@ -72,7 +65,7 @@ $(MINJS_DST): $(MINJS_CONFIG) $(SRC) $(BUILDER_SRC) $(PKG_DST)
 	@mkdir -p $(dir $@)
 	../node_modules/.bin/rollup -c $<
 	@ls -l $@
-	@test "$$(wc -c < $@)" -le $(MAX_BYTES) || { echo "ERROR: $@ exceeds $(MAX_BYTES) byte cap" >&2; exit 1; }
+	@test "$$(wc -c < $@)" -le $(MINJS_MAX_BYTES) || { echo "ERROR: $@ exceeds $(MINJS_MAX_BYTES) byte cap" >&2; exit 1; }
 	@echo ""
 
 $(PKG_DST):
